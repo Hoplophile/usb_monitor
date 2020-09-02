@@ -1,0 +1,66 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+mobile_app:
+  group: !include groups.yaml
+  automation: !include automations.yaml
+  script: !include scripts.yaml
+  scene: !include scenes.yaml
+
+# Mosquitto                                                                                               - platform: mqtt                                                                                      name: "USB Meter Power"                          
+mqtt:
+  broker: 192.168.0.136
+  port: 1883
+  username: hoplophile
+  password: hoplohome
+
+# Data from USB Monitor
+sensor:
+  - platform: mqtt
+    name: "Power"
+    state_topic: "USB_monitor/PowerMeter/Power"
+    unit_of_measurement: 'mW'
+    icon: mdi:usb
+    availability_topic: "USB_monitor/PowerMeter/available"
+    payload_available: "online"
+    payload_not_available: "offline"
+
+  - platform: mqtt
+    name: "Voltage"
+    state_topic: "USB_monitor/PowerMeter/Voltage"
+    unit_of_measurement: 'V'
+    icon: mdi:usb
+    availability_topic: "USB_monitor/PowerMeter/available"
+    payload_available: "online"
+    payload_not_available: "offline"
+
+  - platform: mqtt
+    name: "Current"
+    state_topic: "USB_monitor/PowerMeter/Current"
+    unit_of_measurement: 'mA'
+    icon: mdi:usb
+    availability_topic: "USB_monitor/PowerMeter/available"
+    payload_available: "online"
+    payload_not_available: "offline"
+
+# Test switch
+switch:
+  - platform: mqtt
+    name: "Test switch"
+    state_topic: "USB_monitor/gpio/14"
+    command_topic: "USB_monitor/gpio/14"
+    availability_topic: "USB_monitor/PowerMeter/available"
+    payload_on: "1"
+    payload_off: "0"
+    state_on: "ON"
+    state_off: "OFF"
+    payload_available: "online"
+    payload_not_available: "offline"
+    optimistic: true
+    qos: 0
+    retain: false

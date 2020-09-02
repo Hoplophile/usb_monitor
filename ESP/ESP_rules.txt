@@ -1,0 +1,8 @@
+on System#Boot do
+    timerSet,1,5
+endon
+
+on Rules#Timer=1 do
+    Publish %sysname%/PowerMeter/available,online
+    timerSet,1,5
+endon
